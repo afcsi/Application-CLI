@@ -1,2 +1,5 @@
 coverage
 pylint
+sphinx
+myst-parser
+sphinx-rtd-theme
