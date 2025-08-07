@@ -12,11 +12,12 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
@@ -35,34 +36,36 @@ jobs:
       - name: Lint with pylint
         run: |
           pylint src --exit-zero
-          # Pour échouer la build si score < 9.0
-          SCORE=$(pylint src --score y | tee /dev/tty | sed -n 's/.*rated \([0-9.]\+\)\/10.*/\1/p')
-          python - <<EOF
-import sys
-score = float("$SCORE")
-if score < 9.0:
-    print(f"Pylint score {score} < 9.0, échec de la CI.")
-    sys.exit(1)
-EOF
+          SCORE=$(pylint src --score y | sed -n 's/.*rated \([0-9.]\+\)\/10.*/\1/')
+          python3 - <<EOF
+          import sys
+          score = float("$SCORE")
+          if score < 9.0:
+              print(f"Pylint score {score} < 9.0, échec de la CI.")
+              sys.exit(1)
+          EOF
 
   deploy-doc:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: build-and-test
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
+
       - name: Install Sphinx
         run: |
           pip install -r requirements.txt
           pip install sphinx sphinx-rtd-theme
+
       - name: Build docs
         working-directory: docs
-        run: |
-          make html
+        run: make html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
