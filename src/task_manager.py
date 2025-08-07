@@ -1,12 +1,58 @@
 import argparse
 import json
 import os
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
-# Fichier de persistance par défaut à la racine du repo
+# Fichier de persistance (à la racine du repo)
 TASKS_FILE = os.path.join(os.path.dirname(__file__), '..', 'tasks.json')
+DATE_FMT = "%Y-%m-%d"
 
-def load_tasks():
+
+# ---------- Helpers / Validation ----------
+def parse_date(s: str) -> date:
+    """Parse 'YYYY-MM-DD' -> date."""
+    return datetime.strptime(s, DATE_FMT).date()
+
+
+def validate_due(due: str) -> None:
+    """Vérifie le format de date YYYY-MM-DD."""
+    try:
+        parse_date(due)
+    except ValueError as exc:
+        raise ValueError("Format de date invalide, attendu YYYY-MM-DD") from exc
+
+
+def validate_priority(p: int) -> None:
+    """Priorité 1 (haute) -> 5 (basse)."""
+    if p < 1 or p > 5:
+        raise ValueError("La priorité doit être comprise entre 1 (haute) et 5 (basse)")
+
+
+def is_overdue(due_str: str) -> bool:
+    """True si la tâche est en retard (due < aujourd'hui)."""
+    return parse_date(due_str) < date.today()
+
+
+def is_due_within(due_str: str, days: int) -> bool:
+    """True si la tâche est à échéance dans <= days (inclus)."""
+    d = parse_date(due_str)
+    return date.today() <= d <= date.today() + timedelta(days=days)
+
+
+def status_flag(t: dict) -> str:
+    """Petit indicateur visuel pour l'affichage des tâches."""
+    try:
+        if is_overdue(t['due']):
+            return "⚠️ OVERDUE"
+        if is_due_within(t['due'], 3):
+            return "⏳ soon"
+    except Exception:
+        pass
+    return ""
+
+
+# ---------- I/O JSON ----------
+def load_tasks() -> list:
     """Charge la liste des tâches depuis le fichier JSON."""
     try:
         with open(TASKS_FILE, 'r', encoding='utf-8') as f:
@@ -14,14 +60,20 @@ def load_tasks():
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 
-def save_tasks(tasks):
+
+def save_tasks(tasks: list) -> None:
     """Sauvegarde la liste des tâches dans le fichier JSON."""
     with open(TASKS_FILE, 'w', encoding='utf-8') as f:
         json.dump(tasks, f, indent=2, ensure_ascii=False)
 
-def add_task(args):
-    """Ajoute une nouvelle tâche (utilisée par les tests)."""
+
+# ---------- Opérations ----------
+def add_task(args) -> None:
+    """Ajoute une nouvelle tâche."""
     tasks = load_tasks()
+    validate_priority(args.priority)
+    validate_due(args.due)
+
     next_id = max([t['id'] for t in tasks], default=0) + 1
     task = {
         'id': next_id,
@@ -35,19 +87,42 @@ def add_task(args):
     save_tasks(tasks)
     print(f"Tâche ajoutée (ID {next_id})")
 
-def list_tasks(args):
-    """Affiche les tâches triées (utilisée par les tests)."""
+
+def list_tasks(args) -> None:
+    """Affiche les tâches triées, avec filtres 'overdue' et 'due-in'."""
     tasks = load_tasks()
-    key = 'priority' if args.sort == 'priority' else 'due'
-    tasks_sorted = sorted(tasks, key=lambda t: t[key])
-    if not tasks_sorted:
+    filtered = list(tasks)
+
+    # Filtres de rappels
+    if getattr(args, 'overdue', False):
+        filtered = [t for t in filtered if t.get('due') and is_overdue(t['due'])]
+    elif getattr(args, 'due_in', None) is not None:
+        n = int(args.due_in)
+        filtered = [t for t in filtered if t.get('due') and is_due_within(t['due'], n)]
+
+    # Tri
+    if args.sort == 'priority':
+        filtered.sort(key=lambda t: int(t.get('priority', 5)))
+    else:  # tri par date
+        def key_date(t):
+            try:
+                return parse_date(t.get('due', '9999-12-31'))
+            except Exception:
+                return date.max
+        filtered.sort(key=key_date)
+
+    if not filtered:
         print("Aucune tâche à afficher.")
         return
-    for t in tasks_sorted:
-        print(f"[{t['id']}] {t['title']} (Priorité: {t['priority']} – Due: {t['due']})")
 
-def delete_task(args):
-    """Supprime une tâche par ID (utilisée par les tests)."""
+    for t in filtered:
+        flag = status_flag(t)
+        flag = f" {flag}" if flag else ""
+        print(f"[{t['id']}] {t['title']} (Priorité: {t['priority']} – Due: {t['due']}){flag}")
+
+
+def delete_task(args) -> None:
+    """Supprime une tâche existante par ID."""
     tasks = load_tasks()
     filtered = [t for t in tasks if t['id'] != args.id]
     if len(filtered) == len(tasks):
@@ -56,7 +131,29 @@ def delete_task(args):
         save_tasks(filtered)
         print(f"Tâche {args.id} supprimée.")
 
-# --- CLI (utilisable en prod) ---
+
+def edit_task(args) -> None:
+    """Modifie une tâche (seuls les champs fournis sont mis à jour)."""
+    tasks = load_tasks()
+    for t in tasks:
+        if t['id'] == args.id:
+            if args.title is not None:
+                t['title'] = args.title
+            if args.desc is not None:
+                t['desc'] = args.desc
+            if args.priority is not None:
+                validate_priority(args.priority)
+                t['priority'] = args.priority
+            if args.due is not None:
+                validate_due(args.due)
+                t['due'] = args.due
+            save_tasks(tasks)
+            print(f"Tâche {args.id} mise à jour.")
+            return
+    print(f"Aucune tâche trouvée avec l'ID {args.id}")
+
+
+# ---------- CLI ----------
 def main():
     parser = argparse.ArgumentParser(description="Gestionnaire de tâches CLI")
     subparsers = parser.add_subparsers(title="Commandes", dest="command")
@@ -69,9 +166,12 @@ def main():
     p.add_argument('--due', required=True, help="Date limite (YYYY-MM-DD)")
     p.set_defaults(func=add_task)
 
-    # list
+    # list (+ rappels)
     p = subparsers.add_parser('list', help="Lister les tâches")
     p.add_argument('--sort', choices=['priority', 'date'], default='priority', help="Tri des tâches")
+    mg = p.add_mutually_exclusive_group()
+    mg.add_argument('--overdue', action='store_true', help="Afficher uniquement les tâches en retard")
+    mg.add_argument('--due-in', type=int, metavar='JOURS', help="Afficher les tâches à échéance ≤ N jours")
     p.set_defaults(func=list_tasks)
 
     # delete
@@ -79,11 +179,24 @@ def main():
     p.add_argument('--id', type=int, required=True, help="ID de la tâche")
     p.set_defaults(func=delete_task)
 
+    # edit
+    p = subparsers.add_parser('edit', help="Modifier une tâche existante")
+    p.add_argument('--id', type=int, required=True, help="ID de la tâche")
+    p.add_argument('--title', help="Nouveau titre")
+    p.add_argument('--desc', help="Nouvelle description")
+    p.add_argument('--priority', type=int, help="Nouvelle priorité (1-5)")
+    p.add_argument('--due', help="Nouvelle date (YYYY-MM-DD)")
+    p.set_defaults(func=edit_task)
+
     args = parser.parse_args()
     if hasattr(args, 'func'):
-        args.func(args)
+        try:
+            args.func(args)
+        except ValueError as e:
+            print(f"Erreur: {e}")
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     main()
