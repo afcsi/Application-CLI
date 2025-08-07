@@ -1,16 +1,11 @@
 import os
 import sys
-import json
-import tempfile
-import unittest
-from io import StringIO
-from importlib import reload
-
-# Permet d'importer le module src/task_manager.py
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, PROJECT_ROOT)
+SRC_DIR = os.path.join(PROJECT_ROOT, 'src')
+if SRC_DIR not in sys.path:
+    sys.path.insert(0, SRC_DIR)
 
-import src.task_manager as tm
+import task_manager as tm
 
 class TestTaskManager(unittest.TestCase):
     def setUp(self):
