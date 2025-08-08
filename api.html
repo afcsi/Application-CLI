@@ -87,70 +87,176 @@
              
   <section id="module-task_manager">
 <span id="api-reference"></span><h1>API Reference<a class="headerlink" href="#module-task_manager" title="Link to this heading"></a></h1>
+<p>CLI de gestion de tâches personnelles.</p>
+<p>Ce module fournit un petit gestionnaire de tâches en ligne de commande (Option A) :
+- CRUD partiel : add, list (avec tri et filtres de rappel), edit, delete
+- Persistance JSON (<code class="docutils literal notranslate"><span class="pre">tasks.json</span></code> à la racine du dépôt)
+- Validations basiques (priorité / date)
+- Exécutable via <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">src/task_manager.py</span> <span class="pre">&lt;commande&gt;</span></code></p>
+<p>Les fonctions exposées sont pensées pour être testées avec <code class="docutils literal notranslate"><span class="pre">unittest</span></code>.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.add_task">
-<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">add_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#add_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.add_task" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">add_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#add_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.add_task" title="Link to this definition"></a></dt>
+<dd><p>Ajoute une nouvelle tâche.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – Arguments de la CLI. Attendus : <code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">desc</span></code>, <code class="docutils literal notranslate"><span class="pre">priority</span></code>, <code class="docutils literal notranslate"><span class="pre">due</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.delete_task">
-<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">delete_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#delete_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.delete_task" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">delete_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#delete_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.delete_task" title="Link to this definition"></a></dt>
+<dd><p>Supprime une tâche par ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – Arguments de la CLI. Attendu : <code class="docutils literal notranslate"><span class="pre">id</span></code> (int).</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.edit_task">
-<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">edit_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#edit_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.edit_task" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">edit_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#edit_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.edit_task" title="Link to this definition"></a></dt>
+<dd><p>Modifie une tâche existante (seuls les champs fournis sont mis à jour).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – Arguments de la CLI. Attendus : <code class="docutils literal notranslate"><span class="pre">id</span></code> et, optionnellement,
+<code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">desc</span></code>, <code class="docutils literal notranslate"><span class="pre">priority</span></code>, <code class="docutils literal notranslate"><span class="pre">due</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.is_due_within">
 <span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">is_due_within</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">due_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/task_manager.html#is_due_within"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.is_due_within" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Indique si l’échéance est dans <em>days</em> jours au plus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>due_str</strong> – Date d’échéance au format <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>.</p></li>
+<li><p><strong>days</strong> – Nombre de jours maximum avant l’échéance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True si <code class="docutils literal notranslate"><span class="pre">today</span> <span class="pre">&lt;=</span> <span class="pre">due</span> <span class="pre">&lt;=</span> <span class="pre">today</span> <span class="pre">+</span> <span class="pre">days</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.is_overdue">
 <span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">is_overdue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">due_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/task_manager.html#is_overdue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.is_overdue" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Indique si la tâche est en retard.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>due_str</strong> – Date d’échéance au format <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True si la date est strictement antérieure à aujourd’hui, sinon False.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.list_tasks">
-<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">list_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#list_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.list_tasks" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">list_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#list_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.list_tasks" title="Link to this definition"></a></dt>
+<dd><p>Affiche les tâches triées, avec filtres de rappel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> – Arguments de la CLI. Attendus : <code class="docutils literal notranslate"><span class="pre">sort</span></code>, <code class="docutils literal notranslate"><span class="pre">overdue</span></code> (bool),
+<code class="docutils literal notranslate"><span class="pre">due_in</span></code> (int ou None).</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.load_tasks">
-<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">load_tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/task_manager.html#load_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.load_tasks" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">load_tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/task_manager.html#load_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.load_tasks" title="Link to this definition"></a></dt>
+<dd><p>Charge la liste des tâches depuis le fichier JSON.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Une liste de dictionnaires représentant les tâches.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.main">
-<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/task_manager.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.main" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.main" title="Link to this definition"></a></dt>
+<dd><p>Point d’entrée de l’application CLI.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.parse_date">
-<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">parse_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">date</span></span></span><a class="reference internal" href="_modules/task_manager.html#parse_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.parse_date" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">parse_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">date</span></span></span><a class="reference internal" href="_modules/task_manager.html#parse_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.parse_date" title="Link to this definition"></a></dt>
+<dd><p>Convertit une chaîne <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code> en objet <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.date</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> – Date au format <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Un objet <code class="xref py py-class docutils literal notranslate"><span class="pre">datetime.date</span></code>.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Si le format n’est pas valide.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.save_tasks">
-<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">save_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tasks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#save_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.save_tasks" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">save_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tasks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#save_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.save_tasks" title="Link to this definition"></a></dt>
+<dd><p>Sauvegarde la liste des tâches dans le fichier JSON.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tasks</strong> – Liste de tâches à persister.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.status_flag">
-<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">status_flag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/task_manager.html#status_flag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.status_flag" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">status_flag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/task_manager.html#status_flag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.status_flag" title="Link to this definition"></a></dt>
+<dd><p>Retourne un petit indicateur visuel pour l’affichage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>task</strong> – Dictionnaire représentant la tâche.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Une chaîne vide, <code class="docutils literal notranslate"><span class="pre">&quot;⚠️</span> <span class="pre">OVERDUE&quot;</span></code> si en retard, ou <code class="docutils literal notranslate"><span class="pre">&quot;⏳</span> <span class="pre">soon&quot;</span></code> si &lt;= 3 jours.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.validate_due">
 <span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">validate_due</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">due</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#validate_due"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.validate_due" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Valide la date d’échéance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>due</strong> – Date au format <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Si la date n’a pas le bon format.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="task_manager.validate_priority">
-<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">validate_priority</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#validate_priority"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.validate_priority" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">task_manager.</span></span><span class="sig-name descname"><span class="pre">validate_priority</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/task_manager.html#validate_priority"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#task_manager.validate_priority" title="Link to this definition"></a></dt>
+<dd><p>Valide la priorité (1 à 5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>priority</strong> – Priorité numérique où 1 est haute et 5 est basse.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Si la priorité n’est pas comprise entre 1 et 5.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 
